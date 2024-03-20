@@ -1,0 +1,33 @@
+{
+    "AWSEBDockerrunVersion": "1",
+    "containerDefinitions": [
+        {
+            "name": "client",
+            "image": "phmclong/client_service",
+            "hostname": "client",
+            "essential": false
+        },
+        {
+            "name": "server",
+            "image": "phmclong/server_service",
+            "hostname": "api",
+            "essential": false
+        },
+        {
+            "name": "nginx",
+            "image": "phmclong/nginx_service ",
+            "hostname": "nginx",
+            "essential": true,
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "containerPort": 80
+                }
+            ],
+            "links": [
+                "client",
+                "server"
+            ]
+        }
+    ]
+}
