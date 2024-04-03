@@ -3,122 +3,124 @@ import {
   SELECT_SHOWTIMES,
   SELECT_ALL_SHOWTIMES,
   GET_SHOWTIMES,
-  DELETE_SHOWTIME
-} from '../types';
-import { setAlert } from './alert';
-const url = 'http://localhost:8081';
+  DELETE_SHOWTIME,
+} from "../types";
+import { setAlert } from "./alert";
+import config from "../../config";
+
+const host = config.host;
 
 export const toggleDialog = () => ({ type: TOGGLE_DIALOG });
 
-export const selectShowtime = showtime => ({
+export const selectShowtime = (showtime) => ({
   type: SELECT_SHOWTIMES,
-  payload: showtime
+  payload: showtime,
 });
 
-export const selectAllShowtimes = () => ({ 
-  type: SELECT_ALL_SHOWTIMES 
+export const selectAllShowtimes = () => ({
+  type: SELECT_ALL_SHOWTIMES,
 });
 
-export const getShowtimes = () => async dispatch => {
+export const getShowtimes = () => async (dispatch) => {
   try {
-    const token = localStorage.getItem('jwtToken');
-    const newUrl = url + '/showtimes';
-    const response = await fetch(newUrl, {
-      method: 'GET',
+    const token = localStorage.getItem("jwtToken");
+    const newhost = host + "/showtimes";
+    const response = await fetch(newhost, {
+      method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
     const showtimes = await response.json();
     if (response.ok) {
       dispatch({ type: GET_SHOWTIMES, payload: showtimes });
     }
   } catch (error) {
-    dispatch(setAlert(error.message, 'error', 5000));
+    dispatch(setAlert(error.message, "error", 5000));
   }
 };
 
-export const addShowtime = showtime => async dispatch => {
+export const addShowtime = (showtime) => async (dispatch) => {
   try {
-    const token = localStorage.getItem('jwtToken');
-    const newUrl = url + '/showtimes/';
-    const response = await fetch(newUrl, {
-      method: 'POST',
+    const token = localStorage.getItem("jwtToken");
+    const newhost = host + "/showtimes/";
+    const response = await fetch(newhost, {
+      method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(showtime)
+      body: JSON.stringify(showtime),
     });
     if (response.ok) {
-      dispatch(setAlert('Showtime Created', 'success', 5000));
-      return { 
-        status: 'success', 
-        message: 'Showtime Created' 
+      dispatch(setAlert("Showtime Created", "success", 5000));
+      return {
+        status: "success",
+        message: "Showtime Created",
       };
     }
   } catch (error) {
-    dispatch(setAlert(error.message, 'error', 5000));
+    dispatch(setAlert(error.message, "error", 5000));
     return {
-      status: 'error',
-      message: ' Cinema have not been saved, try again.'
+      status: "error",
+      message: " Cinema have not been saved, try again.",
     };
   }
 };
 
-export const updateShowtime = (showtime, id) => async dispatch => {
+export const updateShowtime = (showtime, id) => async (dispatch) => {
   try {
-    const token = localStorage.getItem('jwtToken');
-    const newUrl = url + '/showtimes/' + id;
-    const response = await fetch(newUrl, {
-      method: 'PATCH',
+    const token = localStorage.getItem("jwtToken");
+    const newhost = host + "/showtimes/" + id;
+    const response = await fetch(newhost, {
+      method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(showtime)
+      body: JSON.stringify(showtime),
     });
     if (response.ok) {
-      dispatch(setAlert('Showtime Created', 'success', 5000));
-      return { 
-        status: 'success', 
-        message: 'Showtime Created' 
+      dispatch(setAlert("Showtime Created", "success", 5000));
+      return {
+        status: "success",
+        message: "Showtime Created",
       };
     }
   } catch (error) {
-    dispatch(setAlert(error.message, 'error', 5000));
+    dispatch(setAlert(error.message, "error", 5000));
     return {
-      status: 'error',
-      message: ' Cinema have not been saved, try again.'
+      status: "error",
+      message: " Cinema have not been saved, try again.",
     };
   }
 };
 
-export const deleteShowtime = id => async dispatch => {
+export const deleteShowtime = (id) => async (dispatch) => {
   try {
-    const token = localStorage.getItem('jwtToken');
-    const newUrl = url + '/showtimes/' + id;
-    const response = await fetch(newUrl, {
-      method: 'DELETE',
+    const token = localStorage.getItem("jwtToken");
+    const newhost = host + "/showtimes/" + id;
+    const response = await fetch(newhost, {
+      method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
+        "Content-Type": "application/json",
+      },
     });
     if (response.ok) {
       dispatch({ type: DELETE_SHOWTIME, payload: id });
-      dispatch(setAlert('Showtime Deleted', 'success', 5000));
+      dispatch(setAlert("Showtime Deleted", "success", 5000));
       dispatch(getShowtimes());
-      return { 
-        status: 'success', 
-        message: 'Showtime Removed' 
+      return {
+        status: "success",
+        message: "Showtime Removed",
       };
     }
   } catch (error) {
-    dispatch(setAlert(error.message, 'error', 5000));
+    dispatch(setAlert(error.message, "error", 5000));
     return {
-      status: 'error',
-      message: ' Showtime have not been deleted, try again.'
+      status: "error",
+      message: " Showtime have not been deleted, try again.",
     };
   }
 };

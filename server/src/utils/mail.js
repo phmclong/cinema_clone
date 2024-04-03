@@ -1,11 +1,11 @@
-const nodemailer = require('nodemailer');
-const keys = require('../keys')
-const GMAIL_USER = keys.userGmail;
-const GMAIL_PASSWORD = keys.passwordGmail;
+const nodemailer = require("nodemailer");
+const config = require("../config");
+const GMAIL_USER = config.userGmail;
+const GMAIL_PASSWORD = config.passwordGmail;
 
 const transporter = nodemailer.createTransport({
   // service: 'smtp.gmail.com', //smtp.gmail.com  //in place of service use host...
-  service: 'gmail', //smtp.gmail.com  //in place of service use host...
+  service: "gmail", //smtp.gmail.com  //in place of service use host...
   secure: false, //true
   // secure: true, //true
   port: 25, //465
@@ -21,13 +21,13 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-transporter.sendEMail = function(mailRequest) {
-  return new Promise(function(resolve, reject) {
+transporter.sendEMail = function (mailRequest) {
+  return new Promise(function (resolve, reject) {
     transporter.sendMail(mailRequest, (error, info) => {
       if (error) {
         reject(error);
       } else {
-        resolve('The message was sent!');
+        resolve("The message was sent!");
       }
     });
   });

@@ -5,126 +5,126 @@ import {
   DELETE_USER,
   TOGGLE_USER_DIALOG,
   SELECT_USER,
-  SELECT_ALL_USERS
-} from '../types';
+  SELECT_ALL_USERS,
+} from "../types";
+import { setAlert } from "./alert";
+import config from "../../config";
 
-import { setAlert } from './alert';
-// const url = 'https://cinema-sheon.herokuapp.com';
-const url = 'http://localhost:8081';
+const host = config.host;
 
 export const toggleUserDialog = () => ({ type: TOGGLE_USER_DIALOG });
 
-export const selectUser = user => ({
+export const selectUser = (user) => ({
   type: SELECT_USER,
-  payload: user
+  payload: user,
 });
 
 export const selectAllUsers = () => ({ type: SELECT_ALL_USERS });
 
-export const getUsers = () => async dispatch => {
+export const getUsers = () => async (dispatch) => {
   try {
-    const token = localStorage.getItem('jwtToken');
-    const newUrl = url + '/users';
-    const response = await fetch(newUrl, {
-      method: 'GET',
+    const token = localStorage.getItem("jwtToken");
+    const newhost = host + "/users";
+    const response = await fetch(newhost, {
+      method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
     const users = await response.json();
     if (response.ok) {
       dispatch({ type: GET_USERS, payload: users });
     }
   } catch (error) {
-    dispatch(setAlert(error.message, 'error', 5000));
+    dispatch(setAlert(error.message, "error", 5000));
   }
 };
 
-export const addUser = user => async dispatch => {
+export const addUser = (user) => async (dispatch) => {
   try {
-    const token = localStorage.getItem('jwtToken');
-    const newUrl = url + '/create_user';
-    const response = await fetch(newUrl, {
-      method: 'POST',
+    const token = localStorage.getItem("jwtToken");
+    const newhost = host + "/create_user";
+    const response = await fetch(newhost, {
+      method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(user)
+      body: JSON.stringify(user),
     });
     const data = await response.json();
     const newUser = data.user;
     if (response.ok) {
-      dispatch(setAlert('User Created', 'success', 5000));
+      dispatch(setAlert("User Created", "success", 5000));
       dispatch({ type: ADD_USER, payload: newUser });
-      return { status: 'success', message: 'User Created' };
+      return { status: "success", message: "User Created" };
     } else {
       throw new Error(data._message);
     }
   } catch (error) {
-    dispatch(setAlert(error.message, 'error', 5000));
+    dispatch(setAlert(error.message, "error", 5000));
     return {
-      status: 'error',
-      message: ' User have not been saved, try again.'
+      status: "error",
+      message: " User have not been saved, try again.",
     };
   }
 };
 
-export const updateUser = (user, id) => async dispatch => {
+export const updateUser = (user, id) => async (dispatch) => {
   try {
-    const token = localStorage.getItem('jwtToken');
-    const newUrl = url+ '/users/' + id;
-    const response = await fetch(newUrl, {
-      method: 'PATCH',
+    const token = localStorage.getItem("jwtToken");
+    const newhost = host + "/users/" + id;
+    const response = await fetch(newhost, {
+      method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(user)
+      body: JSON.stringify(user),
     });
     const data = await response.json();
     const newUser = data;
     // const newUser = data.user;
     if (response.ok) {
-      dispatch(setAlert('User Updated', 'success', 5000));
+      dispatch(setAlert("User Updated", "success", 5000));
       dispatch({ type: UPDATE_USER, payload: newUser });
-      return { status: 'success', message: 'User Updated' };
+      return { status: "success", message: "User Updated" };
     } else {
       throw new Error(data._message);
     }
   } catch (error) {
-    dispatch(setAlert(error.message, 'error', 5000));
+    dispatch(setAlert(error.message, "error", 5000));
     return {
-      status: 'error',
-      message: ' User have not been saved, try again.'
+      status: "error",
+      message: " User have not been saved, try again.",
     };
   }
 };
 
-export const deleteUser = id => async dispatch => {
+export const deleteUser = (id) => async (dispatch) => {
   try {
-    const token = localStorage.getItem('jwtToken');
-    const newUrl = url + '/users/' + id;
-    const response = await fetch(newUrl, {
-      method: 'DELETE',
+    const token = localStorage.getItem("jwtToken");
+    const newhost = host + "/users/" + id;
+    const response = await fetch(newhost, {
+      method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
+        "Content-Type": "application/json",
+      },
     });
     const data = await response.json();
     if (response.ok) {
-      dispatch(setAlert('User Deleted', 'success', 5000));
+      dispatch(setAlert("User Deleted", "success", 5000));
       dispatch({ type: DELETE_USER, payload: id });
-      return { status: 'success', message: 'User Removed' };
+      return { status: "success", message: "User Removed" };
     } else {
       throw new Error(data._message);
     }
   } catch (error) {
-    dispatch(setAlert(error.message, 'error', 5000));
+    dispatch(setAlert(error.message, "error", 5000));
     return {
-      status: 'error',
-      message: ' User have not been deleted, try again.'
+      status: "error",
+      message: " User have not been deleted, try again.",
     };
   }
 };

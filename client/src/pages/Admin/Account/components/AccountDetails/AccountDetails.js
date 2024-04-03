@@ -1,26 +1,25 @@
-import React, { Component } from 'react';
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core';
-import { Button, TextField } from '@material-ui/core';
+import React, { Component } from "react";
+import classNames from "classnames";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
 import {
   Portlet,
   PortletHeader,
   PortletLabel,
   PortletContent,
-  PortletFooter
-} from '../../../../../components';
-// Component styles
-import styles from './styles';
+  PortletFooter,
+} from "../../../../../components";
+import styles from "./styles";
+import config from "../../../../../config";
 
-// const url = 'https://cinema-sheon.herokuapp.com';
-const url = "http://localhost:8081"
+const host = config.host;
 class Account extends Component {
   state = {
-    name: '',
-    email: '',
-    phone: '',
-    password: ''
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
   };
 
   componentDidMount() {
@@ -37,17 +36,17 @@ class Account extends Component {
   onUpdateUser = async () => {
     try {
       const { name, email, phone, password } = this.state;
-      const token = localStorage.getItem('jwtToken');
+      const token = localStorage.getItem("jwtToken");
       let body = { name, email, phone };
       if (password) body = { ...body, password };
-      const newUrl = url + '/users/me';
-      const response = await fetch(newUrl, {
-        method: 'PATCH',
+      const newhost = host + "/users/me";
+      const response = await fetch(newhost, {
+        method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
       });
       if (response.ok) {
         const user = await response.json();
@@ -83,8 +82,8 @@ class Account extends Component {
                 required
                 value={name}
                 variant="outlined"
-                onChange={event =>
-                  this.handleFieldChange('name', event.target.value)
+                onChange={(event) =>
+                  this.handleFieldChange("name", event.target.value)
                 }
               />
               <TextField
@@ -94,8 +93,8 @@ class Account extends Component {
                 required
                 value={email}
                 variant="outlined"
-                onChange={event =>
-                  this.handleFieldChange('email', event.target.value)
+                onChange={(event) =>
+                  this.handleFieldChange("email", event.target.value)
                 }
               />
             </div>
@@ -107,8 +106,8 @@ class Account extends Component {
                 type="number"
                 value={phone}
                 variant="outlined"
-                onChange={event =>
-                  this.handleFieldChange('phone', event.target.value)
+                onChange={(event) =>
+                  this.handleFieldChange("phone", event.target.value)
                 }
               />
               <TextField
@@ -118,8 +117,8 @@ class Account extends Component {
                 type="password"
                 value={password}
                 variant="outlined"
-                onChange={event =>
-                  this.handleFieldChange('password', event.target.value)
+                onChange={(event) =>
+                  this.handleFieldChange("password", event.target.value)
                 }
               />
             </div>
@@ -129,7 +128,8 @@ class Account extends Component {
           <Button
             color="primary"
             variant="contained"
-            onClick={this.onUpdateUser}>
+            onClick={this.onUpdateUser}
+          >
             Save details
           </Button>
         </PortletFooter>
@@ -141,7 +141,7 @@ class Account extends Component {
 Account.propTypes = {
   className: PropTypes.string,
   classes: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Account);

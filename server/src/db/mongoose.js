@@ -1,26 +1,28 @@
 const mongoose = require("mongoose");
+const config = require("../config");
 
-const keys = require("../keys");
-const MONGO_DB_USER = keys.mongoUser;
-const MONGO_DB_PASSWORD = keys.mongoPassword;
-const MONGO_DB_COLLECTION = keys.mongoCollection;
-const MONGO_DB_CLUSTER = keys.mongoCluster;
-const MONGO_DB_OPTIONS = keys.mongoOptions;
+// const MONGO_DB_USER = config.mongoUser;
+// const MONGO_DB_PASSWORD = config.mongoPassword;
+// const MONGO_DB_COLLECTION = config.mongoCollection;
+// const MONGO_DB_CLUSTER = config.mongoCluster;
+// const MONGO_DB_OPTIONS = config.mongoOptions;
 
+// const connectUri =
+//   "mongodb://" +
+//   MONGO_DB_USER +
+//   ":" +
+//   MONGO_DB_PASSWORD +
+//   MONGO_DB_CLUSTER +
+//   MONGO_DB_COLLECTION +
+//   MONGO_DB_OPTIONS;
 
-const connectUri = 'mongodb://' + MONGO_DB_USER + ':' + MONGO_DB_PASSWORD + MONGO_DB_CLUSTER + MONGO_DB_COLLECTION + MONGO_DB_OPTIONS
-// mongodb://loversky01:<insertYourPassword>
-// @docdb-2023-05-25-02-30-08.cluster-clpydp1mhrmb.ap-southeast-1.docdb.amazonaws.com:27017/
-// ?ssl=true&ssl_ca_certs=ap-southeast-1-bundle.pem&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false
-
-// const mongodbURI = keys.mongoURI;
-// mongoose.connect(mongodbURI, {
-mongoose.connect(connectUri, {
+const mongodbURI = config.mongoURI;
+mongoose.connect(mongodbURI, {
+  // mongoose.connect(connectUri, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
   useCreateIndex: true,
 });
-
 
 // const mongoose = require('mongoose');
 
@@ -31,5 +33,3 @@ mongoose.connect(connectUri, {
 //   useNewUrlParser: true,
 //   useCreateIndex: true,
 // });
-
-
