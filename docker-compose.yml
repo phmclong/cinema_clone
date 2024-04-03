@@ -23,8 +23,6 @@
       environment:
         - APP_PORT=5000
         - MONGO_URI=mongodb://mongo:27017/cinema
-        - GMAIL_USER=phmclong
-        - GMAIL_PASSWORD=phamlong1234a
       depends_on:
         - mongo  # Ensure MongoDB container is started first
       volumes:
