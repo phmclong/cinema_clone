@@ -1,0 +1,61 @@
+Users:
+[
+    {
+        _id: ObjectId('660c5c6f04667d0026f8610b'),
+        role: 1,
+        name: 'Long Phạm',
+        username: 'test',
+        email: 'phmclong@gmail.com',
+        phone: '0971785281',
+        password: '$2a$08$YIq3tADWicT2viX6TATY9O/4iN2TfXAdv/eD65AFXdYuOwabpAtl.',
+        createdAt: ISODate('2024-04-02T19:28:47.979Z'),
+        updatedAt: ISODate('2024-04-02T19:28:47.979Z'),
+        __v: 0
+    }
+]
+
+Movies:
+[
+    {
+      _id: ObjectId('660cd80bd3fb1c002676e01b'),
+      image: 'http://localhost:5000/uploads/movies/1712117771962-the_batman.jpg',
+      title: 'the batman',
+      language: 'english',
+      duration: 180,
+      description: "when a sadistic serial killer begins murdering key political figures in gotham, batman is forced to investigate the city's hidden corruption and question his family's involvement.",
+      director: 'matt reeves, peter craig, bob kane',
+      cast: 'robert pattinson, zoë kravitz, jeffrey wright',
+      releaseDate: ISODate('2024-04-03T04:13:26.360Z'),
+      endDate: ISODate('2024-06-30T04:13:00.000Z'),
+      genre: 'action,thriller',
+      __v: 0
+    },
+    {
+      _id: ObjectId('660cf2eb4ac5110026d57fc4'),
+      image: 'http://localhost:5000/uploads/movies/1712124651555-joker1.jpg',
+      title: 'joker',
+      language: 'english',
+      duration: 123,
+      description: 'aaaaaaaaaaaaa',
+      director: 'fasfafsaf',
+      cast: 'asfasfasf',
+      releaseDate: ISODate('2024-04-10T06:09:00.000Z'),
+      endDate: ISODate('2024-04-30T06:09:00.000Z'),
+      genre: 'drama,comedy',
+      __v: 0
+    }
+]
+
+Cinema:
+[
+    {
+      _id: ObjectId('660cf3564ac5110026d582c4'),
+      seats: [ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ] ],
+      name: 'Cinema1',
+      ticketPrice: 10000,
+      city: 'hanoi',
+      seatsAvailable: 12,
+      __v: 0,
+      image: 'http://localhost:5000/uploads/cinemas/1712124759062-cinema.jpg'
+    }
+]
