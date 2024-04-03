@@ -1,15 +1,15 @@
-// const keys = require("./keys");
-
-// Express App Setup
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const compression = require("compression");
 const morgan = require("morgan");
+const config = require("./config");
 
-if (process.env.NODE_ENV !== "production") {
-  require("dotenv").config({ path: path.join(__dirname, "../.env") });
-}
+const port = config.appPort || 5000;
+
+// if (process.env.NODE_ENV !== "production") {
+//   require("dotenv").config({ path: path.join(__dirname, "../.env") });
+// }
 
 require("./db/mongoose");
 
@@ -28,9 +28,6 @@ const accessLogStream = fs.createWriteStream(
 
 const app = express();
 app.disable("x-powered-by");
-const port = keys.appPort || 8081;
-// const port = 8081;
-
 app.use(compression());
 app.use(morgan("combined", { stream: accessLogStream }));
 
@@ -70,6 +67,6 @@ app.use(invitationsRouter);
 // match one above, send back React's index.html file.
 app.get("/", (req, res) => {
   // res.sendFile(path.join(__dirname + '../../client/build/index.html'));
-  res.status(200).send("Hi express");
+  res.status(200).send("Hi express aaaa");
 });
-app.listen(port, () => console.log(`app is runninssssg in PORT: ${port}`));
+app.listen(port, () => console.log(`app is running in PORT: ${port}`));

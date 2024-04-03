@@ -4,160 +4,162 @@ import {
   GET_RESERVATION_SUGGESTED_SEATS,
   SELECT_RESERVATIONS,
   SELECT_ALL_RESERVATIONS,
-  DELETE_RESERVATION
-} from '../types';
-import { setAlert } from './alert';
-const url = 'http://localhost:8081';
+  DELETE_RESERVATION,
+} from "../types";
+import { setAlert } from "./alert";
+import config from "../../config";
+
+const host = config.host;
 
 export const toggleDialog = () => ({ type: TOGGLE_DIALOG });
 
-export const selectReservation = reservation => ({
+export const selectReservation = (reservation) => ({
   type: SELECT_RESERVATIONS,
-  payload: reservation
+  payload: reservation,
 });
 
 export const selectAllReservations = () => ({
-  type: SELECT_ALL_RESERVATIONS
+  type: SELECT_ALL_RESERVATIONS,
 });
 
-export const getMyReservations = (username) => async dispatch => {
+export const getMyReservations = (username) => async (dispatch) => {
   try {
-    const token = localStorage.getItem('jwtToken');
-    const newUrl = url + '/my_reservation';
-    const response = await fetch(newUrl, {
-      method: 'POST',
+    const token = localStorage.getItem("jwtToken");
+    const newhost = host + "/my_reservation";
+    const response = await fetch(newhost, {
+      method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(username)
+      body: JSON.stringify(username),
     });
     const reservations = await response.json();
     if (response.ok) {
       dispatch({ type: GET_RESERVATIONS, payload: reservations });
     }
   } catch (error) {
-    dispatch(setAlert(error.message, 'error', 5000));
+    dispatch(setAlert(error.message, "error", 5000));
   }
 };
 
-export const getReservations = () => async dispatch => {
+export const getReservations = () => async (dispatch) => {
   try {
-    const token = localStorage.getItem('jwtToken');
-    const newUrl = url + '/reservations';
-    const response = await fetch(newUrl, {
-      method: 'GET',
+    const token = localStorage.getItem("jwtToken");
+    const newhost = host + "/reservations";
+    const response = await fetch(newhost, {
+      method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
     const reservations = await response.json();
     if (response.ok) {
       dispatch({ type: GET_RESERVATIONS, payload: reservations });
     }
   } catch (error) {
-    dispatch(setAlert(error.message, 'error', 5000));
+    dispatch(setAlert(error.message, "error", 5000));
   }
 };
 
-export const addReservation = reservation => async dispatch => {
+export const addReservation = (reservation) => async (dispatch) => {
   try {
-    const token = localStorage.getItem('jwtToken');
-    const newUrl = url + '/reservations';
-    const response = await fetch(newUrl, {
-      method: 'POST',
+    const token = localStorage.getItem("jwtToken");
+    const newhost = host + "/reservations";
+    const response = await fetch(newhost, {
+      method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(reservation)
+      body: JSON.stringify(reservation),
     });
     if (response.ok) {
       const { reservation, QRCode } = await response.json();
-      dispatch(setAlert('Reservation Created', 'success', 5000));
+      dispatch(setAlert("Reservation Created", "success", 5000));
       return {
-        status: 'success',
-        message: 'Reservation Created',
-        data: { reservation, QRCode }
+        status: "success",
+        message: "Reservation Created",
+        data: { reservation, QRCode },
       };
     }
   } catch (error) {
-    dispatch(setAlert(error.message, 'error', 5000));
+    dispatch(setAlert(error.message, "error", 5000));
     return {
-      status: 'error',
-      message: ' Reservation have not been created, try again.'
+      status: "error",
+      message: " Reservation have not been created, try again.",
     };
   }
 };
 
-export const updateReservation = (reservation, id) => async dispatch => {
+export const updateReservation = (reservation, id) => async (dispatch) => {
   try {
-    const token = localStorage.getItem('jwtToken');
-    const newUrl = url + '/reservations/' + id;
-    const response = await fetch(newUrl, {
-      method: 'PATCH',
+    const token = localStorage.getItem("jwtToken");
+    const newhost = host + "/reservations/" + id;
+    const response = await fetch(newhost, {
+      method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(reservation)
+      body: JSON.stringify(reservation),
     });
     if (response.ok) {
-      dispatch(setAlert('Reservation Updated', 'success', 5000));
-      return { status: 'success', message: 'Reservation Updated' };
+      dispatch(setAlert("Reservation Updated", "success", 5000));
+      return { status: "success", message: "Reservation Updated" };
     }
   } catch (error) {
-    dispatch(setAlert(error.message, 'error', 5000));
+    dispatch(setAlert(error.message, "error", 5000));
     return {
-      status: 'error',
-      message: ' Reservation have not been updated, try again.'
+      status: "error",
+      message: " Reservation have not been updated, try again.",
     };
   }
 };
 
-export const deleteReservation = id => async dispatch => {
+export const deleteReservation = (id) => async (dispatch) => {
   try {
-    const token = localStorage.getItem('jwtToken');
-    const newUrl = url + '/reservations/' + id;
-    const response = await fetch(newUrl, {
-      method: 'DELETE',
+    const token = localStorage.getItem("jwtToken");
+    const newhost = host + "/reservations/" + id;
+    const response = await fetch(newhost, {
+      method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
+        "Content-Type": "application/json",
+      },
     });
     if (response.ok) {
       dispatch({ type: DELETE_RESERVATION, payload: id });
-      dispatch(setAlert('Reservation Deleted', 'success', 5000));
-      return { status: 'success', message: 'Reservation Removed' };
+      dispatch(setAlert("Reservation Deleted", "success", 5000));
+      return { status: "success", message: "Reservation Removed" };
     }
   } catch (error) {
-    dispatch(setAlert(error.message, 'error', 5000));
+    dispatch(setAlert(error.message, "error", 5000));
     return {
-      status: 'error',
-      message: ' Reservation have not been deleted, try again.'
+      status: "error",
+      message: " Reservation have not been deleted, try again.",
     };
   }
 };
 
-export const getSuggestedReservationSeats = username => async dispatch => {
+export const getSuggestedReservationSeats = (username) => async (dispatch) => {
   try {
-    const token = localStorage.getItem('jwtToken');
-    const newUrl = url + '/reservations/usermodeling/' + username;
-    const response = await fetch(newUrl, {
-      method: 'GET',
+    const token = localStorage.getItem("jwtToken");
+    const newhost = host + "/reservations/usermodeling/" + username;
+    const response = await fetch(newhost, {
+      method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
     const reservationSeats = await response.json();
     if (response.ok) {
       dispatch({
         type: GET_RESERVATION_SUGGESTED_SEATS,
-        payload: reservationSeats
+        payload: reservationSeats,
       });
     }
   } catch (error) {
-    dispatch(setAlert(error.message, 'error', 5000));
+    dispatch(setAlert(error.message, "error", 5000));
   }
 };

@@ -1,37 +1,40 @@
-version: '3'
-services:
-  nginx:
-    restart: always
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./nginx
-    ports:
-      - '3050:80'
-  api:
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./server
-    volumes:
-      - /app/node_modules
-      - ./server:/app
-    environment:
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - PGUSER=postgres
-      - PGHOST=postgres
-      - PGDATABASE=postgres
-      - PGPASSWORD=postgres_password
-      - PGPORT=5432
-  client:
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./client
-    volumes:
-      - /app/node_modules
-      - ./client:/app
-  mongo:
-    image: mongo
-    restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+  version: '3'
+
+  services:
+    client:
+      container_name: client
+      build:
+        context: ./client
+        dockerfile: Dockerfile
+      ports:
+        - "3000:3000"  # Map port 3000 on host to port 3000 on container
+      # volumes:
+      #   - /app/node_modules
+      #   - ./client:/app  # Mount client code into container
+      #   - /app/build
+
+    server:
+      container_name: server
+      build:
+        context: ./server
+        dockerfile: Dockerfile
+      ports:
+        - "5000:5000"  
+      environment:
+        - APP_PORT=5000
+        - MONGO_URI=mongodb://mongo:27017/cinema
+      depends_on:
+        - mongo  # Ensure MongoDB container is started first
+      volumes:
+        - ./server:/app 
+    mongo:
+      container_name: mongo
+      image: mongo:latest
+      restart: always
+      ports:
+        - "27017:27017"  
+      volumes:
+        - ./mongo_data:/data/db  # Mount volume for MongoDB data persistence
+
+  volumes:
+    mongo_data:
